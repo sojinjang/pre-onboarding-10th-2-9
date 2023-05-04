@@ -1,10 +1,11 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 import { Dropdown, Guidance, SearchBar } from '../components';
 import { Background } from '../components/style';
 import getRecommendKeywords from '../utils/api';
 import KeywordType from '../@types/response';
 import useDebounce from '../hooks/useDebounce';
+import useDropdown from '../hooks/useDropdown';
 
 interface RecommendWordsType {
   [key: string]: KeywordType[];
@@ -12,17 +13,13 @@ interface RecommendWordsType {
 
 const Search = () => {
   const MAX_REC_NUM = 8;
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [targetWord, setTargetWord] = useState<string>('');
   const [targetRecommendedWords, setTargetRecommendedWords] = useState<KeywordType[]>([]);
   const [recommendedWords, setRecommendedWords] = useState<RecommendWordsType>({ '': [] });
+  const { isDropdownOpen, setIsDropdownOpen, searchBarRef, handleSearchBarClick } = useDropdown();
   const debouncedTargetWord = useDebounce(targetWord, 500);
-  const searchBarRef = useRef<HTMLDivElement>(null);
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTargetWord(e.target.value.trim());
-  }, []);
-  const handleSearchBarClick = useCallback(() => {
-    setIsDropdownOpen(true);
   }, []);
 
   const handleOutsideClick = useCallback(
