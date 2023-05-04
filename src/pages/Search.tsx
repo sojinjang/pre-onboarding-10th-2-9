@@ -16,30 +16,11 @@ const Search = () => {
   const [targetWord, setTargetWord] = useState<string>('');
   const [targetRecommendedWords, setTargetRecommendedWords] = useState<KeywordType[]>([]);
   const [recommendedWords, setRecommendedWords] = useState<RecommendWordsType>({ '': [] });
-  const { isDropdownOpen, setIsDropdownOpen, searchBarRef, handleSearchBarClick } = useDropdown();
+  const { isDropdownOpen, searchBarRef, handleSearchBarClick } = useDropdown();
   const debouncedTargetWord = useDebounce(targetWord, 500);
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setTargetWord(e.target.value.trim());
   }, []);
-
-  const handleOutsideClick = useCallback(
-    (e: MouseEvent) => {
-      if (
-        isDropdownOpen &&
-        searchBarRef.current &&
-        !searchBarRef.current.contains(e.target as Node)
-      )
-        setIsDropdownOpen(false);
-    },
-    [isDropdownOpen],
-  );
-
-  useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [handleOutsideClick]);
 
   useEffect(() => {
     const getKeywords = async () => {

@@ -29,7 +29,6 @@ const useDropdown = () => {
 
   return {
     isDropdownOpen,
-    setIsDropdownOpen,
     searchBarRef,
     handleSearchBarClick,
   };
